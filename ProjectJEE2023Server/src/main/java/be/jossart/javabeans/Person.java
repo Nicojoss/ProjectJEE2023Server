@@ -3,6 +3,8 @@ package be.jossart.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import be.jossart.dao.PersonDAO;
+
 public class Person implements Serializable {
 	//Attributes
 	private static final long serialVersionUID = -3448923763468846826L;
@@ -21,7 +23,17 @@ public class Person implements Serializable {
 		this.username = username;
 		this.password = password;
 	}
+	public Person(String firstname, String lastname, String username, String password) {
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.username = username;
+		this.password = password;
+	}
 	//METHODS
+	public boolean create() {
+		PersonDAO dao = new PersonDAO();
+		return dao.create(this);
+	}
 	//GETTERS SETTERS
 	public int getIdPerson() {
 		return idPerson;
@@ -60,5 +72,4 @@ public class Person implements Serializable {
 	public void setRecipeList(ArrayList<Recipe> recipeList) {
 		this.recipeList = recipeList;
 	}
-
 }

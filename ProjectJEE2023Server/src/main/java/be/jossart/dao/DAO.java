@@ -2,11 +2,12 @@ package be.jossart.dao;
 
 import java.sql.Connection;
 
+import be.jossart.connection.DbConnection;
+
 public abstract class DAO<T> {
-	protected Connection connect = null;
+	protected Connection connect = DbConnection.getInstance();
 	
-	public DAO(Connection conn){
-		this.connect = conn;
+	public DAO(){
 	}
 	
 	public abstract boolean create(T obj);

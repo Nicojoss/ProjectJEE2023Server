@@ -1,13 +1,10 @@
 package be.jossart.dao;
 
-import java.sql.Connection;
-
 import be.jossart.javabeans.RecipeStep;
 
 public class RecipeStepDAO extends DAO<RecipeStep>{
 
-	public RecipeStepDAO(Connection conn) {
-		super(conn);
+	public RecipeStepDAO() {
 	}
 
 	@Override

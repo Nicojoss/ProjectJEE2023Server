@@ -1,13 +1,11 @@
 package be.jossart.dao;
 
-import java.sql.Connection;
 
 import be.jossart.javabeans.Ingredient;
 
 public class IngredientDAO extends DAO<Ingredient>{
 
-	public IngredientDAO(Connection conn) {
-		super(conn);
+	public IngredientDAO() {
 
 	}
 
