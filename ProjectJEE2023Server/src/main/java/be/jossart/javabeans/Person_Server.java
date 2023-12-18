@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import be.jossart.dao.AbstractDAOFactory_Server;
 import be.jossart.dao.DAO_Server;
+import be.jossart.dao.PersonDAO_Server;
 
 
 public class Person_Server implements Serializable {
@@ -33,9 +34,19 @@ public class Person_Server implements Serializable {
 		this.username = username;
 		this.password = password;
 	}
+	public Person_Server() {
+	}
+	public Person_Server(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
 	//METHODS
 	public boolean create() {
 		return personDAO.create(this);
+	}
+	public static Person_Server login(String username, String password) {
+		PersonDAO_Server dao = (PersonDAO_Server) adf.getPersonDAO();
+		return dao.login(username, password);
 	}
 	//GETTERS SETTERS
 	public int getIdPerson() {

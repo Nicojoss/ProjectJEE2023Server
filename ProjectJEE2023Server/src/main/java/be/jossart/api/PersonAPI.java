@@ -34,4 +34,25 @@ public class PersonAPI {
 				return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 				}
 	}
+	
+	@Path("/login")
+	@POST
+	@FormParam(MediaType.APPLICATION_JSON)
+    public Response login(@FormParam("username") String username, @FormParam("password") String password) {
+		try {
+			if (username == null || password == null) {
+				return Response.status(Status.BAD_REQUEST).build();
+		        }
+
+		    Person_Server person = Person_Server.login(username, password);
+
+		    if (person != null) {
+		    	return Response.status(Status.OK).entity(person).build();
+		    }else {
+		    	return Response.status(Status.UNAUTHORIZED).build();
+		    }        
+		} catch (Exception e) {
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
+    }
 }
