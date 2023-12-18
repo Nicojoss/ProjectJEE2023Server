@@ -2,17 +2,17 @@ package be.jossart.javabeans;
 
 import java.io.Serializable;
 
-public class Ingredient implements Serializable{
+public class Ingredient_Server implements Serializable{
 	//ATTRIBUTES
 	private static final long serialVersionUID = 634419802561898936L;
 	private int idIngredient;
 	private String name;
 	private IngredientType type;
-	private Recipe recipe;
+	private Recipe_Server recipe;
 	//CTOR
-	public Ingredient() {
+	public Ingredient_Server() {
 	}
-	public Ingredient(int idIngredient, String name, IngredientType type, Recipe recipe) {
+	public Ingredient_Server(int idIngredient, String name, IngredientType type, Recipe_Server recipe) {
 		this.idIngredient = idIngredient;
 		this.name = name;
 		this.type = type;
@@ -38,10 +38,10 @@ public class Ingredient implements Serializable{
 	public void setType(IngredientType type) {
 		this.type = type;
 	}
-	public Recipe getRecipe() {
+	public Recipe_Server getRecipe() {
 		return recipe;
 	}
-	public void setRecipe(Recipe recipe) {
+	public void setRecipe(Recipe_Server recipe) {
 		this.recipe = recipe;
 	}
 

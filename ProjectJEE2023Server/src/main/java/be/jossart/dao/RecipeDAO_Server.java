@@ -2,35 +2,34 @@ package be.jossart.dao;
 
 import java.sql.Connection;
 
-import be.jossart.javabeans.Ingredient;
+import be.jossart.javabeans.Recipe_Server;
 
-public class IngredientDAO extends DAO<Ingredient>{
+public class RecipeDAO_Server extends DAO_Server<Recipe_Server>{
 
-	public IngredientDAO(Connection conn) {
+	public RecipeDAO_Server(Connection conn) {
 		super(conn);
-
 	}
 
 	@Override
-	public boolean create(Ingredient obj) {
+	public boolean create(Recipe_Server obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean delete(Ingredient obj) {
+	public boolean delete(Recipe_Server obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean update(Ingredient obj) {
+	public boolean update(Recipe_Server obj) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public Ingredient find(int id) {
+	public Recipe_Server find(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

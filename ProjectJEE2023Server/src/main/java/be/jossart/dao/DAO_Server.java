@@ -2,10 +2,10 @@ package be.jossart.dao;
 
 import java.sql.Connection;
 
-public abstract class DAO<T> {
+public abstract class DAO_Server<T> {
 	protected Connection connect = null;
 	
-	public DAO(Connection conn){
+	public DAO_Server(Connection conn){
 		this.connect = conn;
 	}
 	

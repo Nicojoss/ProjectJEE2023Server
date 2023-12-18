@@ -2,16 +2,16 @@ package be.jossart.javabeans;
 
 import java.io.Serializable;
 
-public class RecipeStep implements Serializable{
+public class RecipeStep_Server implements Serializable{
 	//ATTRIBUTES
 	private static final long serialVersionUID = -1368662956594765085L;
 	private int idRecipeStep;
 	private String instruction;
-	private Recipe recipe;
+	private Recipe_Server recipe;
 	//CTOR
-	public RecipeStep() { 
+	public RecipeStep_Server() { 
 	}
-	public RecipeStep(int idRecipeStep, String instruction, Recipe recipe) {
+	public RecipeStep_Server(int idRecipeStep, String instruction, Recipe_Server recipe) {
 		this.idRecipeStep = idRecipeStep;
 		this.instruction = instruction;
 		this.recipe = recipe;
@@ -30,10 +30,10 @@ public class RecipeStep implements Serializable{
 	public void setInstruction(String instruction) {
 		this.instruction = instruction;
 	}
-	public Recipe getRecipe() {
+	public Recipe_Server getRecipe() {
 		return recipe;
 	}
-	public void setRecipe(Recipe recipe) {
+	public void setRecipe(Recipe_Server recipe) {
 		this.recipe = recipe;
 	}
 
