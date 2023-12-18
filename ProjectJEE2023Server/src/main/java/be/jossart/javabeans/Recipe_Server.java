@@ -3,24 +3,24 @@ package be.jossart.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Recipe implements Serializable{
+public class Recipe_Server implements Serializable{
 
 	//ATTRIBUTES
 	private static final long serialVersionUID = -7287441285222249732L;
 	private int idRecipe;
 	private String name;
-	private Person person;
+	private Person_Server person;
 	private RecipeGender recipeGender;
-	private ArrayList<Ingredient> ingredientList;
-	private ArrayList<RecipeStep> recipeStepList;
+	private ArrayList<Ingredient_Server> ingredientList;
+	private ArrayList<RecipeStep_Server> recipeStepList;
 	
 	//CTOR
-	public Recipe() { // Je les aies mis si on en a pas besoin on supprime à la fin
+	public Recipe_Server() { // Je les aies mis si on en a pas besoin on supprime à la fin
 		ingredientList = new ArrayList<>();
 		recipeStepList = new ArrayList<>();
 	}
-	public Recipe(int idRecipe, String name, Person person, RecipeGender recipeGender,
-			ArrayList<Ingredient> ingredientList, ArrayList<RecipeStep> recipeStepList) {
+	public Recipe_Server(int idRecipe, String name, Person_Server person, RecipeGender recipeGender,
+			ArrayList<Ingredient_Server> ingredientList, ArrayList<RecipeStep_Server> recipeStepList) {
 		super();
 		this.idRecipe = idRecipe;
 		this.name = name;
@@ -44,10 +44,10 @@ public class Recipe implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Person getPerson() {
+	public Person_Server getPerson() {
 		return person;
 	}
-	public void setPerson(Person person) {
+	public void setPerson(Person_Server person) {
 		this.person = person;
 	}
 	public RecipeGender getRecipeGender() {
@@ -56,16 +56,16 @@ public class Recipe implements Serializable{
 	public void setRecipeGender(RecipeGender recipeGender) {
 		this.recipeGender = recipeGender;
 	}
-	public ArrayList<Ingredient> getIngredientList() {
+	public ArrayList<Ingredient_Server> getIngredientList() {
 		return ingredientList;
 	}
-	public void setIngredientList(ArrayList<Ingredient> ingredientList) {
+	public void setIngredientList(ArrayList<Ingredient_Server> ingredientList) {
 		this.ingredientList = ingredientList;
 	}
-	public ArrayList<RecipeStep> getRecipeStepList() {
+	public ArrayList<RecipeStep_Server> getRecipeStepList() {
 		return recipeStepList;
 	}
-	public void setRecipeStepList(ArrayList<RecipeStep> recipeStepList) {
+	public void setRecipeStepList(ArrayList<RecipeStep_Server> recipeStepList) {
 		this.recipeStepList = recipeStepList;
 	}
 }

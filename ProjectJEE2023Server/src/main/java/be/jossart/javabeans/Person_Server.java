@@ -3,9 +3,11 @@ package be.jossart.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import be.jossart.dao.PersonDAO;
+import be.jossart.dao.AbstractDAOFactory_Server;
+import be.jossart.dao.DAO_Server;
 
-public class Person implements Serializable {
+
+public class Person_Server implements Serializable {
 	//Attributes
 	private static final long serialVersionUID = -3448923763468846826L;
 	private int idPerson;
@@ -13,9 +15,11 @@ public class Person implements Serializable {
 	private String lastname;
 	private String username;
 	private String password;
-	private ArrayList<Recipe> recipeList; // 0..* Donc c'est au moment ou la person va creer une recette qu'il faut l'initialiser
+	private ArrayList<Recipe_Server> recipeList; // 0..* Donc c'est au moment ou la person va creer une recette qu'il faut l'initialiser
+	private static final AbstractDAOFactory_Server adf = AbstractDAOFactory_Server.getFactory();
+	private static final DAO_Server<Person_Server> personDAO = adf.getPersonDAO();
 	//CTOR
-	public Person(int idPerson, String firstname, String lastname, String username, String password) {
+	public Person_Server(int idPerson, String firstname, String lastname, String username, String password) {
 		super();
 		this.idPerson = idPerson;
 		this.firstname = firstname;
@@ -23,7 +27,7 @@ public class Person implements Serializable {
 		this.username = username;
 		this.password = password;
 	}
-	public Person(String firstname, String lastname, String username, String password) {
+	public Person_Server(String firstname, String lastname, String username, String password) {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.username = username;
@@ -31,8 +35,7 @@ public class Person implements Serializable {
 	}
 	//METHODS
 	public boolean create() {
-		PersonDAO dao = new PersonDAO();
-		return dao.create(this);
+		return personDAO.create(this);
 	}
 	//GETTERS SETTERS
 	public int getIdPerson() {
@@ -66,10 +69,10 @@ public class Person implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public ArrayList<Recipe> getRecipeList() {
+	public ArrayList<Recipe_Server> getRecipeList() {
 		return recipeList;
 	}
-	public void setRecipeList(ArrayList<Recipe> recipeList) {
+	public void setRecipeList(ArrayList<Recipe_Server> recipeList) {
 		this.recipeList = recipeList;
 	}
 }
