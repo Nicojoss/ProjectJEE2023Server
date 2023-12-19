@@ -79,4 +79,21 @@ public class PersonDAO_Server extends DAO_Server<Person_Server>{
 
 	    return person;
 	}
+
+	public boolean updatePassword(int idPerson, String newPassword) {
+		
+		String query = "{call UpdatePassword(?,?)}";
+	    
+		try (CallableStatement cs = this.connect.prepareCall(query)) {
+	        cs.setInt(1, idPerson);
+	        cs.setString(2, newPassword);
+
+	        int updatedRows = cs.executeUpdate(); // executeUpdate() return int value
+
+	        return updatedRows > 0;
+	    } catch (SQLException e) {
+	        System.out.println("Error: " + e.getMessage());
+	        return false;
+	    }
+	}
 }

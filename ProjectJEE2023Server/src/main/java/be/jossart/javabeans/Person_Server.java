@@ -48,6 +48,10 @@ public class Person_Server implements Serializable {
 		PersonDAO_Server dao = (PersonDAO_Server) adf.getPersonDAO();
 		return dao.login(username, password);
 	}
+	public static boolean updatePassword(int idPerson, String newPassword) {
+		PersonDAO_Server dao = (PersonDAO_Server) adf.getPersonDAO();
+		return dao.updatePassword(idPerson, newPassword);
+	}
 	//GETTERS SETTERS
 	public int getIdPerson() {
 		return idPerson;

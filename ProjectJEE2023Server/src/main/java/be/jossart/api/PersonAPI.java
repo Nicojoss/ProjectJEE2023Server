@@ -2,6 +2,7 @@ package be.jossart.api;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -55,4 +56,21 @@ public class PersonAPI {
 	        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
     }
+	@Path("/updatePassword")
+	@PUT
+	@FormParam(MediaType.APPLICATION_JSON)
+	public Response updatePassword(@FormParam("idPerson") int idPerson, @FormParam("newPassword") String newPassword) {
+	    try {
+	    	if (idPerson == 0 || newPassword == null) {
+				return Response.status(Status.BAD_REQUEST).build();
+		        }
+	        if (Person_Server.updatePassword(idPerson, newPassword) == true) {
+	            return Response.status(Status.OK).build();
+	        } else {
+	            return Response.status(Status.NOT_MODIFIED).build();
+	        }
+	    } catch (Exception e) {
+	        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+	    }
+	}
 }
