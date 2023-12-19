@@ -67,6 +67,7 @@ public class PersonDAO_Server extends DAO_Server<Person_Server>{
 	        try (ResultSet resultSet = (ResultSet) cs.getObject(3)) {
 	            if (resultSet.next()) {
 	                person = new Person_Server();
+	                person.setIdPerson(resultSet.getInt("IdPerson"));
 	                person.setFirstname(resultSet.getString("Firstname"));
 	                person.setLastname(resultSet.getString("Lastname"));
 	                person.setUsername(resultSet.getString("Username"));
