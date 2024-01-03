@@ -20,6 +20,7 @@
     </plugins>
   </build>
   <dependencies>
+
     <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -50,5 +51,6 @@
             <artifactId>ojdbc10</artifactId>
             <version>19.21.0.0</version>
         </dependency>
+
   </dependencies>
 </project>
