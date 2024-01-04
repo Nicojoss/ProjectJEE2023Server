@@ -46,7 +46,7 @@ public class IngredientAPI {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/create")
-	public Response createIngredientAndGetId(@FormParam("name") String name, 
+	public Response CreateIngredientAndGetId(@FormParam("name") String name, 
 			@FormParam("type") String type) {
 		try 
 		{
@@ -74,7 +74,7 @@ public class IngredientAPI {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Response updateIngredient(@PathParam("id") int id,
+	public Response UpdateIngredient(@PathParam("id") int id,
 			@FormParam("name") String name,
 	        @FormParam("type") String type) {
 	    try {
@@ -107,7 +107,7 @@ public class IngredientAPI {
 
 	@DELETE
 	@Path("{id}")
-	public Response deleteIngredient(@PathParam("id") int id) {
+	public Response DeleteIngredient(@PathParam("id") int id) {
 	    try {
 	        Ingredient_Server ingredient = new Ingredient_Server(id, null, null, null);
 	        if (!ingredient.delete()) {

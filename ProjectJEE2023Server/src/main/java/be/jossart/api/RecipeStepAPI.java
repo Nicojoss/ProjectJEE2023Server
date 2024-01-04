@@ -22,7 +22,7 @@ public class RecipeStepAPI {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRecipeStep(@PathParam("id") int id) {
+    public Response GetRecipeStep(@PathParam("id") int id) {
         RecipeStep_Server recipeStep = RecipeStep_Server.find(id);
         if(recipeStep == null) {
             return Response.status(Status.NOT_FOUND).build();
@@ -33,7 +33,7 @@ public class RecipeStepAPI {
     @GET
     @Path("{instruction}/{recipeId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRecipeStepId(@PathParam("instruction") String instruction,
+    public Response GetRecipeStepId(@PathParam("instruction") String instruction,
                                     @PathParam("recipeId") int recipeId) {
         
         Recipe_Server recipe = new Recipe_Server(recipeId, null, null);
@@ -48,7 +48,7 @@ public class RecipeStepAPI {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/create")
-    public Response createRecipeStepAndGetId(@FormParam("instruction") String instruction,
+    public Response CreateRecipeStepAndGetId(@FormParam("instruction") String instruction,
                                              @FormParam("recipeId") int recipeId) {
         try 
         {
@@ -74,7 +74,7 @@ public class RecipeStepAPI {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response updateRecipeStep(@PathParam("id") int id,
+    public Response UpdateRecipeStep(@PathParam("id") int id,
                                      @FormParam("instruction") String instruction,
                                      @FormParam("recipeId") int recipeId) {
         try {

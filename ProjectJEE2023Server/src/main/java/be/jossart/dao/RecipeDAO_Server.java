@@ -1,15 +1,10 @@
 package be.jossart.dao;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.jossart.connection.DbConnection;
-import be.jossart.javabeans.IngredientType;
-import be.jossart.javabeans.Ingredient_Server;
 import be.jossart.javabeans.Person_Server;
 import be.jossart.javabeans.RecipeGender;
-import be.jossart.javabeans.RecipeStep_Server;
 import be.jossart.javabeans.Recipe_Server;
 import oracle.jdbc.OracleTypes;
 import oracle.sql.ARRAY;
@@ -19,35 +14,119 @@ import oracle.sql.STRUCT;
 import java.sql.*;
 
 
-public class RecipeDAO_Server extends DAO_Server<Recipe_Server>{
+public class RecipeDAO_Server extends DAO_Server<Recipe_Server> {
 
-	public RecipeDAO_Server(Connection conn) {
-		super(conn);
-	}
+    public RecipeDAO_Server(Connection conn) {
+        super(conn);
+    }
+    @Override
+    public boolean create(Recipe_Server obj) {
+        String query = "{ call Insert_Recipe(?, ?, ?) }";
+        try (CallableStatement cs = this.connect.prepareCall(query)) {
+            cs.setString(1, obj.getName());
+            cs.setString(2, obj.getRecipeGender().name());
+            cs.setInt(3, obj.getPerson().getIdPerson());
 
-	@Override
-	public boolean create(Recipe_Server obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+            cs.execute();
 
-	@Override
-	public boolean delete(Recipe_Server obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error creating recipe: " + e.getMessage());
+        }
 
-	@Override
-	public boolean update(Recipe_Server obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public Recipe_Server find(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public boolean delete(Recipe_Server obj) {
+        String query = "{ call Delete_Recipe(?) }";
+
+        try (CallableStatement cs = this.connect.prepareCall(query)) {
+            cs.setInt(1, obj.getIdRecipe());
+
+            cs.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error deleting recipe: " + e.getMessage());
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean update(Recipe_Server obj) {
+        String query = "{ call Update_Recipe(?, ?, ?, ?) }";
+
+        try (CallableStatement cs = this.connect.prepareCall(query)) {
+            cs.setInt(1, obj.getIdRecipe());
+            cs.setString(2, obj.getName());
+            cs.setString(3, obj.getRecipeGender().name());
+            cs.setInt(4, obj.getPerson().getIdPerson());
+
+            cs.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error updating recipe: " + e.getMessage());
+        }
+
+        return false;
+    }
+
+    @Override
+    public Recipe_Server find(int idPerson) {
+        String query = "{ call findRecipeById(?, ?) }";
+        try (CallableStatement cs = this.connect.prepareCall(query)) {
+            cs.setInt(1, idPerson);
+            cs.registerOutParameter(2, OracleTypes.CURSOR);
+
+            cs.execute();
+
+            ResultSet resultSet = (ResultSet) cs.getObject(2);
+            if (resultSet.next()) {
+                Person_Server person = new Person_Server(
+                        resultSet.getInt("IdPerson"),
+                        resultSet.getString("Firstname"),
+                        resultSet.getString("Lastname"),
+                        resultSet.getString("Username"),
+                        null
+                );
+                Recipe_Server recipe = new Recipe_Server(
+                        resultSet.getInt("IdRecipe"),
+                        resultSet.getString("Name"),
+                        person,
+                        RecipeGender.valueOf(resultSet.getString("RecipeGender")),
+                        null, // Populate the ingredientList
+                        null  // Populate the stepList
+                );
+
+                return recipe;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error finding recipe by ID: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public Recipe_Server findId(Recipe_Server recipe) {
+        String query = "{ call findRecipeId(?, ?, ?) }";
+        try (CallableStatement cs = this.connect.prepareCall(query)) {
+            cs.setString(1, recipe.getName());
+            cs.setString(2, recipe.getRecipeGender().name());
+            cs.setInt(3, recipe.getPerson().getIdPerson());
+            cs.registerOutParameter(4, OracleTypes.CURSOR);
+
+            cs.execute();
+
+            ResultSet resultSet = (ResultSet) cs.getObject(4);
+            if (resultSet.next()) {
+                return find(resultSet.getInt("IdRecipe"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error finding recipe by ID: " + e.getMessage());
+        }
+        return null;
+    }
+
 	public List<Recipe_Server> findRecipeByName(String recherche){
 		List<Recipe_Server> retour = new ArrayList<Recipe_Server>();
 		
@@ -111,8 +190,6 @@ public class RecipeDAO_Server extends DAO_Server<Recipe_Server>{
             }
         }
 		
-		
 		return retour;
 	}
-
 }

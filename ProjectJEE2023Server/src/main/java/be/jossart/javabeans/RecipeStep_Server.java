@@ -42,9 +42,9 @@ public class RecipeStep_Server implements Serializable{
 		RecipeStepDAO_Server dao = (RecipeStepDAO_Server) adf.getRecipeStepDAO();
 		return dao.find(id);
 	}
-	public static RecipeStep_Server findId(RecipeStep_Server ingredient) {
+	public static RecipeStep_Server findId(RecipeStep_Server recipeStep) {
 		RecipeStepDAO_Server dao = (RecipeStepDAO_Server) adf.getRecipeStepDAO();
-		return dao.findId(ingredient);
+		return dao.findId(recipeStep);
 	}
 	//GETTERS SETTERS
 	public int getIdRecipeStep() {

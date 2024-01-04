@@ -14,22 +14,24 @@ public class Ingredient_Server implements Serializable{
 	private int idIngredient;
 	private String name;
 	private IngredientType type;
-	private Recipe_Server recipe;
+	private RecipeIngredient_Server recipeIngredient;
 	private static final AbstractDAOFactory_Server adf = AbstractDAOFactory_Server.getFactory();
 	private static final DAO_Server<Ingredient_Server> ingredientDAO = adf.getIngredientDAO();
 	//CTOR
 	public Ingredient_Server() {
 	}
-	public Ingredient_Server(int idIngredient, String name, IngredientType type, Recipe_Server recipe) {
+	public Ingredient_Server(int idIngredient, String name, IngredientType type,
+			RecipeIngredient_Server recipeIngredient) {
 		this.idIngredient = idIngredient;
 		this.name = name;
 		this.type = type;
-		this.recipe = recipe;
+		this.recipeIngredient = recipeIngredient;
 	}
-	public Ingredient_Server(String name, IngredientType type, Recipe_Server recipe) {
+	public Ingredient_Server(String name, IngredientType type,
+			RecipeIngredient_Server recipeIngredient) {
 		this.name = name;
 		this.type = type;
-		this.recipe = recipe;
+		this.recipeIngredient = recipeIngredient;
 	}
 	//METHODS
 	public boolean create() {
@@ -68,20 +70,21 @@ public class Ingredient_Server implements Serializable{
 	public void setType(IngredientType type) {
 		this.type = type;
 	}
-	public Recipe_Server getRecipe() {
-		return recipe;
+	public RecipeIngredient_Server getRecipeIngredient() {
+		return recipeIngredient;
 	}
-	public void setRecipe(Recipe_Server recipe) {
-		this.recipe = recipe;
+	public void setRecipeIngredient(RecipeIngredient_Server recipeIngredient) {
+		this.recipeIngredient = recipeIngredient;
 	}
 	@Override
 	public String toString() {
-		return "Ingredient_Server [idIngredient=" + idIngredient + ", name=" + name + ", type=" + type + ", recipe="
-				+ recipe + "]";
+		return "Ingredient_Server [idIngredient=" + idIngredient + ", "
+				+ "name=" + name + ", type=" + type + ", recipeIngredient="
+				+ recipeIngredient + "]";
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(idIngredient, name, recipe, type);
+		return Objects.hash(idIngredient, name, recipeIngredient, type);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -93,6 +96,6 @@ public class Ingredient_Server implements Serializable{
 			return false;
 		Ingredient_Server other = (Ingredient_Server) obj;
 		return idIngredient == other.idIngredient && Objects.equals(name, other.name)
-				&& Objects.equals(recipe, other.recipe) && type == other.type;
+				&& Objects.equals(recipeIngredient, other.recipeIngredient) && type == other.type;
 	}
 }
