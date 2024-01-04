@@ -34,6 +34,13 @@ public class Recipe_Server implements Serializable{
 		this.ingredientList = ingredientList;
 		this.recipeStepList = recipeStepList;
 	}
+	public Recipe_Server(int idRecipe,ArrayList<Ingredient_Server> ingredientList,
+			ArrayList<RecipeStep_Server> recipeStepList) {
+		super();
+		this.idRecipe = idRecipe;
+		this.ingredientList = ingredientList;
+		this.recipeStepList = recipeStepList;
+	}
 	//METHODS
 
 	//GETTERS SETTERS

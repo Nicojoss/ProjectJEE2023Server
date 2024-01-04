@@ -1,7 +1,12 @@
 package be.jossart.javabeans;
 
 import java.io.Serializable;
+
 import java.util.Objects;
+
+import be.jossart.dao.AbstractDAOFactory_Server;
+import be.jossart.dao.DAO_Server;
+import be.jossart.dao.RecipeStepDAO_Server;
 
 public class RecipeStep_Server implements Serializable{
 	//ATTRIBUTES
@@ -9,6 +14,8 @@ public class RecipeStep_Server implements Serializable{
 	private int idRecipeStep;
 	private String instruction;
 	private Recipe_Server recipe;
+	private static final AbstractDAOFactory_Server adf = AbstractDAOFactory_Server.getFactory();
+	private static final DAO_Server<RecipeStep_Server> recipeStepDAO = adf.getRecipeStepDAO();
 	//CTOR
 	public RecipeStep_Server() { 
 	}
@@ -17,7 +24,28 @@ public class RecipeStep_Server implements Serializable{
 		this.instruction = instruction;
 		this.recipe = recipe;
 	}
+	public RecipeStep_Server(String instruction, Recipe_Server recipe) {
+		this.instruction = instruction;
+		this.recipe = recipe;
+	}
 	//METHODS
+	public boolean create() {
+		return recipeStepDAO.create(this);
+	}
+	public boolean delete() {
+		return recipeStepDAO.delete(this);
+	}
+	public boolean update() {
+		return recipeStepDAO.update(this);
+	}
+	public static RecipeStep_Server find(int id) {
+		RecipeStepDAO_Server dao = (RecipeStepDAO_Server) adf.getRecipeStepDAO();
+		return dao.find(id);
+	}
+	public static RecipeStep_Server findId(RecipeStep_Server ingredient) {
+		RecipeStepDAO_Server dao = (RecipeStepDAO_Server) adf.getRecipeStepDAO();
+		return dao.findId(ingredient);
+	}
 	//GETTERS SETTERS
 	public int getIdRecipeStep() {
 		return idRecipeStep;

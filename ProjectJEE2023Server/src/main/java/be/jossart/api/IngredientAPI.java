@@ -82,10 +82,10 @@ public class IngredientAPI {
 	            return Response.status(Status.BAD_REQUEST).build();
 	        }
 	        IngredientType ingredientType = IngredientType.valueOf(type);
-	        Ingredient_Server update = new Ingredient_Server(id, name, 
+	        Ingredient_Server ingredient = new Ingredient_Server(id, name, 
 	        		ingredientType, null);
 
-	        if (!update.update()) {
+	        if (!ingredient.update()) {
 	            return Response.status(Status.NO_CONTENT)
 	            		.build();
 	        } 
