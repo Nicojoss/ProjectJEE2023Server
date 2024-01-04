@@ -3,6 +3,7 @@ package be.jossart.javabeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import be.jossart.connection.DbConnection;
 import be.jossart.dao.RecipeDAO_Server;
@@ -76,6 +77,27 @@ public class Recipe_Server implements Serializable{
 		RecipeDAO_Server daoRecipe = new RecipeDAO_Server(DbConnection.getInstance());
 		
 		return daoRecipe.findRecipeByName(recherche);
-		
+	}
+	@Override
+	public String toString() {
+		return "Recipe_Server [idRecipe=" + idRecipe + ", name=" + name + ", person=" + person + ", recipeGender="
+				+ recipeGender + ", ingredientList=" + ingredientList + ", recipeStepList=" + recipeStepList + "]";
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(idRecipe, ingredientList, name, person, recipeGender, recipeStepList);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Recipe_Server other = (Recipe_Server) obj;
+		return idRecipe == other.idRecipe && Objects.equals(ingredientList, other.ingredientList)
+				&& Objects.equals(name, other.name) && Objects.equals(person, other.person)
+				&& recipeGender == other.recipeGender && Objects.equals(recipeStepList, other.recipeStepList);
 	}
 }

@@ -2,6 +2,7 @@ package be.jossart.javabeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import be.jossart.dao.AbstractDAOFactory_Server;
 import be.jossart.dao.DAO_Server;
@@ -89,5 +90,27 @@ public class Person_Server implements Serializable {
 	}
 	public void setRecipeList(ArrayList<Recipe_Server> recipeList) {
 		this.recipeList = recipeList;
+	}
+	@Override
+	public String toString() {
+		return "Person_Server [idPerson=" + idPerson + ", firstname=" + firstname + ", lastname=" + lastname
+				+ ", username=" + username + ", password=" + password + ", recipeList=" + recipeList + "]";
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(firstname, idPerson, lastname, password, recipeList, username);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Person_Server other = (Person_Server) obj;
+		return Objects.equals(firstname, other.firstname) && idPerson == other.idPerson
+				&& Objects.equals(lastname, other.lastname) && Objects.equals(password, other.password)
+				&& Objects.equals(recipeList, other.recipeList) && Objects.equals(username, other.username);
 	}
 }
