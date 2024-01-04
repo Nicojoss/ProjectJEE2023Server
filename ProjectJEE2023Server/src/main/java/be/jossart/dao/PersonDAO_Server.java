@@ -1,10 +1,10 @@
 package be.jossart.dao;
 
 import java.sql.CallableStatement;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import be.jossart.javabeans.Person_Server;
 import oracle.jdbc.OracleTypes;
 
@@ -49,10 +49,30 @@ public class PersonDAO_Server extends DAO_Server<Person_Server>{
 	}
 
 	@Override
-	public Person_Server find(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public Person_Server find(int id) {
+        String query = "{ call findPersonById(?, ?) }";
+        try (CallableStatement cs = this.connect.prepareCall(query)) {
+            cs.setInt(1, id);
+            cs.registerOutParameter(2, OracleTypes.CURSOR);
+
+            cs.execute();
+
+            ResultSet resultSet = (ResultSet) cs.getObject(2);
+            if (resultSet.next()) {
+                return new Person_Server(
+                        resultSet.getInt("IdPerson"),
+                        resultSet.getString("Firstname"),
+                        resultSet.getString("Lastname"),
+                        resultSet.getString("Username"),
+                        null
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error finding ingredient: " + e.getMessage());
+        }
+        return null;
+    }
+	
 	public Person_Server login(String username, String password) {
 	    Person_Server person = null;
 
@@ -96,4 +116,27 @@ public class PersonDAO_Server extends DAO_Server<Person_Server>{
 	        return false;
 	    }
 	}
+	public Person_Server findId(Person_Server person) {
+        String query = "{ call findPersonId(?, ?) }";
+        try (CallableStatement cs = this.connect.prepareCall(query)) {
+            cs.setString(1, person.getUsername());
+            cs.registerOutParameter(3, OracleTypes.CURSOR);
+
+            cs.execute();
+
+            ResultSet resultSet = (ResultSet) cs.getObject(3);
+            if (resultSet.next()) {
+                return new Person_Server(
+                        resultSet.getInt("IdPerson"),
+                        person.getFirstname(),
+                        person.getLastname(),
+                        person.getUsername(),
+                        person.getPassword()
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error finding ingredient: " + e.getMessage());
+        }
+        return null;
+    }
 }

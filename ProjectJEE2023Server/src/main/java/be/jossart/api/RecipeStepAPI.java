@@ -35,7 +35,6 @@ public class RecipeStepAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Response GetRecipeStepId(@PathParam("instruction") String instruction,
                                     @PathParam("recipeId") int recipeId) {
-        
         Recipe_Server recipe = new Recipe_Server(recipeId, null, null);
         RecipeStep_Server recipeStep = new RecipeStep_Server(instruction, recipe);
         RecipeStep_Server recipeStepWithId = RecipeStep_Server.findId(recipeStep);
@@ -50,24 +49,18 @@ public class RecipeStepAPI {
     @Path("/create")
     public Response CreateRecipeStepAndGetId(@FormParam("instruction") String instruction,
                                              @FormParam("recipeId") int recipeId) {
-        try 
-        {
-            if(instruction == null || recipeId <= 0) {
-                return Response.status(Status.BAD_REQUEST).build();
-            }
-            
-            Recipe_Server recipe = new Recipe_Server(recipeId, null, null);
-            RecipeStep_Server recipeStep = new RecipeStep_Server(instruction, recipe);
+    	if(instruction == null || recipeId <= 0) {
+            return Response.status(Status.BAD_REQUEST).build();
+        }
         
-            if(!recipeStep.create()) {
-                return Response.status(Status.SERVICE_UNAVAILABLE).build();
-            }
-            else {
-                return Response.status(Status.CREATED).entity(recipeStep).build();
-            }
-        } 
-        catch (Exception e) {
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        Recipe_Server recipe = new Recipe_Server(recipeId, null, null);
+        RecipeStep_Server recipeStep = new RecipeStep_Server(instruction, recipe);
+    
+        if(!recipeStep.create()) {
+            return Response.status(Status.SERVICE_UNAVAILABLE).build();
+        }
+        else {
+            return Response.status(Status.CREATED).entity(recipeStep).build();
         }
     }
     
@@ -77,37 +70,28 @@ public class RecipeStepAPI {
     public Response UpdateRecipeStep(@PathParam("id") int id,
                                      @FormParam("instruction") String instruction,
                                      @FormParam("recipeId") int recipeId) {
-        try {
-            if (instruction == null || recipeId <= 0) {
-                return Response.status(Status.BAD_REQUEST).build();
-            }
-            Recipe_Server recipe = new Recipe_Server(recipeId, null, null);
-            RecipeStep_Server recipeStep = new RecipeStep_Server(id, instruction, recipe);
+    	if (instruction == null || recipeId <= 0) {
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+        Recipe_Server recipe = new Recipe_Server(recipeId, null, null);
+        RecipeStep_Server recipeStep = new RecipeStep_Server(id, instruction, recipe);
 
-            if (!recipeStep.update()) {
-                return Response.status(Status.NO_CONTENT).build();
-            } 
-            else {
-                return Response.status(Status.SERVICE_UNAVAILABLE).build();
-            }
+        if (!recipeStep.update()) {
+            return Response.status(Status.NO_CONTENT).build();
         } 
-        catch (Exception e) {
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        else {
+            return Response.status(Status.SERVICE_UNAVAILABLE).build();
         }
     }
 
     @DELETE
     @Path("{id}")
     public Response deleteRecipeStep(@PathParam("id") int id) {
-        try {
-            RecipeStep_Server recipeStep = new RecipeStep_Server(id, null, null);
-            if (!recipeStep.delete()) {
-                return Response.status(Status.NO_CONTENT).build();
-            } else {
-                return Response.status(Status.SERVICE_UNAVAILABLE).build();
-            }
-        } catch (Exception e) {
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    	RecipeStep_Server recipeStep = new RecipeStep_Server(id, null, null);
+        if (!recipeStep.delete()) {
+            return Response.status(Status.NO_CONTENT).build();
+        } else {
+            return Response.status(Status.SERVICE_UNAVAILABLE).build();
         }
     }
 }

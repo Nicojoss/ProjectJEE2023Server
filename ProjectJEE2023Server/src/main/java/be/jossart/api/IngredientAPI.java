@@ -48,26 +48,19 @@ public class IngredientAPI {
 	@Path("/create")
 	public Response CreateIngredientAndGetId(@FormParam("name") String name, 
 			@FormParam("type") String type) {
-		try 
-		{
-			if(name == null || type == null) {
-				return Response.status(Status.BAD_REQUEST).build();
-			}
-			
-			IngredientType ingredientType = IngredientType.valueOf(type);
-			Ingredient_Server ingredient = new Ingredient_Server(name, ingredientType,
-					null);
+		if(name == null || type == null) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
 		
-			if(!ingredient.create()) {
-				return Response.status(Status.SERVICE_UNAVAILABLE).build();
-			}
-			else {
-				return Response.status(Status.CREATED).entity(ingredient).build();
-			}
-		} 
-		catch (Exception e) {
-			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.build();
+		IngredientType ingredientType = IngredientType.valueOf(type);
+		Ingredient_Server ingredient = new Ingredient_Server(name, ingredientType,
+				null);
+	
+		if(!ingredient.create()) {
+			return Response.status(Status.SERVICE_UNAVAILABLE).build();
+		}
+		else {
+			return Response.status(Status.CREATED).entity(ingredient).build();
 		}
 	}
 	
@@ -98,25 +91,17 @@ public class IngredientAPI {
 	        return Response.status(Status.BAD_REQUEST)
 	        		.entity("Invalid ingredient type")
 	        		.build();
-	    } 
-	    catch (Exception e) {
-	        return Response.status(Status.INTERNAL_SERVER_ERROR)
-	        		.build();
 	    }
 	}
 
 	@DELETE
 	@Path("{id}")
 	public Response DeleteIngredient(@PathParam("id") int id) {
-	    try {
-	        Ingredient_Server ingredient = new Ingredient_Server(id, null, null, null);
-	        if (!ingredient.delete()) {
-	            return Response.status(Status.NO_CONTENT).build();
-	        } else {
-	            return Response.status(Status.SERVICE_UNAVAILABLE).build();
-	        }
-	    } catch (Exception e) {
-	        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-	    }
+		Ingredient_Server ingredient = new Ingredient_Server(id, null, null, null);
+        if (!ingredient.delete()) {
+            return Response.status(Status.NO_CONTENT).build();
+        } else {
+            return Response.status(Status.SERVICE_UNAVAILABLE).build();
+        }
 	}
 }

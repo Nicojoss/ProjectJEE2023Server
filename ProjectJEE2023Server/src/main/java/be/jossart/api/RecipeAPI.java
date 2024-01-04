@@ -56,23 +56,18 @@ public class RecipeAPI {
     public Response CreateRecipeAndGetId(@FormParam("name") String name,
             @FormParam("gender") String gender,
             @FormParam("idPerson") int idPerson) {
-        try {
-            if (name == null || gender == null) {
-                return Response.status(Status.BAD_REQUEST).build();
-            }
+    	if (name == null || gender == null) {
+            return Response.status(Status.BAD_REQUEST).build();
+        }
 
-            RecipeGender recipeGender = RecipeGender.valueOf(gender);
-            Person_Server person = new Person_Server(idPerson, null, null, null, null);
-            Recipe_Server recipe = new Recipe_Server(0, name, person, recipeGender, null, null);
+        RecipeGender recipeGender = RecipeGender.valueOf(gender);
+        Person_Server person = new Person_Server(idPerson, null, null, null, null);
+        Recipe_Server recipe = new Recipe_Server(0, name, person, recipeGender, null, null);
 
-            if (!recipe.create()) {
-                return Response.status(Status.SERVICE_UNAVAILABLE).build();
-            } else {
-                return Response.status(Status.CREATED).entity(recipe).build();
-            }
-        } catch (Exception e) {
-            return Response.status(Status.INTERNAL_SERVER_ERROR)
-                    .build();
+        if (!recipe.create()) {
+            return Response.status(Status.SERVICE_UNAVAILABLE).build();
+        } else {
+            return Response.status(Status.CREATED).entity(recipe).build();
         }
     }
     @PUT
@@ -102,24 +97,17 @@ public class RecipeAPI {
             return Response.status(Status.BAD_REQUEST)
                     .entity("Invalid recipe gender")
                     .build();
-        } catch (Exception e) {
-            return Response.status(Status.INTERNAL_SERVER_ERROR)
-                    .build();
         }
     }
 
     @DELETE
     @Path("{id}")
     public Response DeleteRecipe(@PathParam("id") int id) {
-        try {
-            Recipe_Server recipe = new Recipe_Server(id, null, null, null, null, null);
-            if (!recipe.delete()) {
-                return Response.status(Status.NO_CONTENT).build();
-            } else {
-                return Response.status(Status.SERVICE_UNAVAILABLE).build();
-            }
-        } catch (Exception e) {
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    	Recipe_Server recipe = new Recipe_Server(id, null, null, null, null, null);
+        if (!recipe.delete()) {
+            return Response.status(Status.NO_CONTENT).build();
+        } else {
+            return Response.status(Status.SERVICE_UNAVAILABLE).build();
         }
     }
 	@GET

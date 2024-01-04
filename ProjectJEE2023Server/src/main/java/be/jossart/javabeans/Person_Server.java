@@ -1,9 +1,9 @@
 package be.jossart.javabeans;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Objects;
-
 import be.jossart.dao.AbstractDAOFactory_Server;
 import be.jossart.dao.DAO_Server;
 import be.jossart.dao.PersonDAO_Server;
@@ -35,6 +35,12 @@ public class Person_Server implements Serializable {
 		this.username = username;
 		this.password = password;
 	}
+	public Person_Server(int idPerson, String firstname, String lastname, String username) {
+		this.idPerson = idPerson;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.username = username;
+	}
 	public Person_Server() {
 	}
 	public Person_Server(String username, String password) {
@@ -52,6 +58,14 @@ public class Person_Server implements Serializable {
 	public static boolean updatePassword(int idPerson, String newPassword) {
 		PersonDAO_Server dao = (PersonDAO_Server) adf.getPersonDAO();
 		return dao.updatePassword(idPerson, newPassword);
+	}
+	public static Person_Server find(int id) {
+		PersonDAO_Server dao = (PersonDAO_Server) adf.getPersonDAO();
+		return dao.find(id);
+	}
+	public static Person_Server findId(Person_Server person) {
+		PersonDAO_Server dao = (PersonDAO_Server) adf.getPersonDAO();
+		return dao.findId(person);
 	}
 	//GETTERS SETTERS
 	public int getIdPerson() {

@@ -36,7 +36,6 @@ public class RecipeIngredientAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Response GetRecipeIngredientId(@PathParam("idRecipe") int idRecipe, 
     		@PathParam("quantity") float quantity) {
-
         RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(idRecipe,
         		quantity, null, null);
         RecipeIngredient_Server recipeIngredientWithId = RecipeIngredient_Server
@@ -54,18 +53,14 @@ public class RecipeIngredientAPI {
     public Response CreateRecipeIngredientAndGetId(@FormParam("recipeId") int recipeId,
             @FormParam("ingredientId") int ingredientId,
             @FormParam("quantity") float quantity) {
-        try {
-            RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(
-            		recipeId, ingredientId, quantity, null, null);
+    	 RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(
+         		recipeId, ingredientId, quantity, null, null);
 
-            if (!recipeIngredient.create()) {
-                return Response.status(Status.SERVICE_UNAVAILABLE).build();
-            } else {
-                return Response.status(Status.CREATED).entity(recipeIngredient).build();
-            }
-        } catch (Exception e) {
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-        }
+         if (!recipeIngredient.create()) {
+             return Response.status(Status.SERVICE_UNAVAILABLE).build();
+         } else {
+             return Response.status(Status.CREATED).entity(recipeIngredient).build();
+         }
     }
 
     @PUT
@@ -74,17 +69,13 @@ public class RecipeIngredientAPI {
     public Response UpdateRecipeIngredient(@PathParam("recipeId") int recipeId,
             @PathParam("ingredientId") int ingredientId,
             @FormParam("quantity") float quantity) {
-        try {
-            RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(
-            		recipeId, ingredientId, quantity, null, null);
+    	RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(
+        		recipeId, ingredientId, quantity, null, null);
 
-            if (!recipeIngredient.update()) {
-                return Response.status(Status.NO_CONTENT).build();
-            } else {
-                return Response.status(Status.SERVICE_UNAVAILABLE).build();
-            }
-        } catch (Exception e) {
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        if (!recipeIngredient.update()) {
+            return Response.status(Status.NO_CONTENT).build();
+        } else {
+            return Response.status(Status.SERVICE_UNAVAILABLE).build();
         }
     }
 
@@ -92,16 +83,12 @@ public class RecipeIngredientAPI {
     @Path("{recipeId}/{ingredientId}")
     public Response DeleteRecipeIngredient(@PathParam("recipeId") int recipeId,
             @PathParam("ingredientId") int ingredientId) {
-        try {
-            RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(
-            		recipeId, ingredientId, 0, null, null);
-            if (!recipeIngredient.delete()) {
-                return Response.status(Status.NO_CONTENT).build();
-            } else {
-                return Response.status(Status.SERVICE_UNAVAILABLE).build();
-            }
-        } catch (Exception e) {
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    	RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(
+        		recipeId, ingredientId, 0, null, null);
+        if (!recipeIngredient.delete()) {
+            return Response.status(Status.NO_CONTENT).build();
+        } else {
+            return Response.status(Status.SERVICE_UNAVAILABLE).build();
         }
     }
 }
