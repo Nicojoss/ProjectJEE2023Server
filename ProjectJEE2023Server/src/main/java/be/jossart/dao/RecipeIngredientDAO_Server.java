@@ -20,7 +20,7 @@ public class RecipeIngredientDAO_Server extends DAO_Server<RecipeIngredient_Serv
         try (CallableStatement cs = this.connect.prepareCall(query)) {
             cs.setInt(1, obj.getIngredient().getIdIngredient());
             cs.setInt(2, obj.getRecipe().getIdRecipe());
-            cs.setFloat(3, obj.getQuantity());
+            cs.setDouble(3, obj.getQuantity());
 
             cs.execute();
 
@@ -55,7 +55,7 @@ public class RecipeIngredientDAO_Server extends DAO_Server<RecipeIngredient_Serv
         try (CallableStatement cs = this.connect.prepareCall(query)) {
             cs.setInt(1, obj.getRecipe().getIdRecipe());
             cs.setInt(2, obj.getIngredient().getIdIngredient());
-            cs.setFloat(3, obj.getQuantity());
+            cs.setDouble(3, obj.getQuantity());
 
             cs.execute();
 
@@ -87,7 +87,7 @@ public class RecipeIngredientDAO_Server extends DAO_Server<RecipeIngredient_Serv
                 return new RecipeIngredient_Server(
                         resultSet.getInt("IdIngredient"),
                         resultSet.getInt("IdRecipe"),
-                        resultSet.getFloat("Quantity"),
+                        resultSet.getDouble("Quantity"),
                         null, // Replace with the appropriate method to fetch Ingredient_Server
                         null  // Replace with the appropriate method to fetch Recipe_Server
                 );
@@ -102,7 +102,7 @@ public class RecipeIngredientDAO_Server extends DAO_Server<RecipeIngredient_Serv
     public RecipeIngredient_Server findId(RecipeIngredient_Server recipeIngredient) {
         String query = "{ call findRecipeIngredientId(?, ?, ?) }";
         try (CallableStatement cs = this.connect.prepareCall(query)) {
-            cs.setFloat(1, recipeIngredient.getQuantity());
+            cs.setDouble(1, recipeIngredient.getQuantity());
             cs.setInt(2, recipeIngredient.getRecipe().getIdRecipe());
             cs.registerOutParameter(3, OracleTypes.CURSOR);
 
@@ -113,7 +113,7 @@ public class RecipeIngredientDAO_Server extends DAO_Server<RecipeIngredient_Serv
                 return new RecipeIngredient_Server(
                         resultSet.getInt("IdIngredient"),
                         resultSet.getInt("IdRecipe"),
-                        resultSet.getFloat("Quantity"),
+                        resultSet.getDouble("Quantity"),
                         null, // Replace with the appropriate method to fetch Ingredient_Server
                         null  // Replace with the appropriate method to fetch Recipe_Server
                 );

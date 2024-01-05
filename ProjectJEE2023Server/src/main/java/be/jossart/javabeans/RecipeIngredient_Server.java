@@ -13,14 +13,14 @@ public class RecipeIngredient_Server implements Serializable{
 	private static final long serialVersionUID = 869701072763507309L;
 	private int idIngredient;
 	private int idRecipe;
-	private float quantity;
+	private double quantity;
 	private Ingredient_Server ingredient;
 	private Recipe_Server recipe;
 	private static final AbstractDAOFactory_Server adf = AbstractDAOFactory_Server.getFactory();
 	private static final DAO_Server<RecipeIngredient_Server> recipeIngredientDAO = adf.getRecipeIngredientDAO();
 	//CTOR
 	public RecipeIngredient_Server() {}
-	public RecipeIngredient_Server(int idRecipe, int idIngredient, float quantity,
+	public RecipeIngredient_Server(int idRecipe, int idIngredient, double quantity,
 			Ingredient_Server ingredient, Recipe_Server recipe) {
 		super();
 		this.idIngredient = idIngredient;
@@ -29,7 +29,7 @@ public class RecipeIngredient_Server implements Serializable{
 		this.ingredient = ingredient;
 		this.recipe = recipe;
 	}
-	public RecipeIngredient_Server(int idRecipe, float quantity,Ingredient_Server ingredient,
+	public RecipeIngredient_Server(int idRecipe, double quantity,Ingredient_Server ingredient,
 			Recipe_Server recipe) {
 		super();
 		this.idRecipe = idRecipe;
@@ -68,10 +68,10 @@ public class RecipeIngredient_Server implements Serializable{
 	public void setIdRecipe(int idRecipe) {
 		this.idRecipe = idRecipe;
 	}
-	public float getQuantity() {
+	public double getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(float quantity) {
+	public void setQuantity(double quantity) {
 		this.quantity = quantity;
 	}
 	public Ingredient_Server getIngredient() {
@@ -106,7 +106,7 @@ public class RecipeIngredient_Server implements Serializable{
 		RecipeIngredient_Server other = (RecipeIngredient_Server) obj;
 		return idIngredient == other.idIngredient && idRecipe == other.idRecipe
 				&& Objects.equals(ingredient, other.ingredient)
-				&& Float.floatToIntBits(quantity) == Float.floatToIntBits(other.quantity)
+				&& Double.doubleToLongBits(quantity) == Double.doubleToLongBits(other.quantity)
 				&& Objects.equals(recipe, other.recipe);
 	}
 }

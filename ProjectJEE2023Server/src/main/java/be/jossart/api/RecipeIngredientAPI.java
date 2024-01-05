@@ -35,7 +35,7 @@ public class RecipeIngredientAPI {
     @Path("/getId/{idRecipe}/{quantity}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response GetRecipeIngredientId(@PathParam("idRecipe") int idRecipe, 
-    		@PathParam("quantity") float quantity) {
+    		@PathParam("quantity") double quantity) {
         RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(idRecipe,
         		quantity, null, null);
         RecipeIngredient_Server recipeIngredientWithId = RecipeIngredient_Server
@@ -52,7 +52,7 @@ public class RecipeIngredientAPI {
     @Path("/create")
     public Response CreateRecipeIngredientAndGetId(@FormParam("recipeId") int recipeId,
             @FormParam("ingredientId") int ingredientId,
-            @FormParam("quantity") float quantity) {
+            @FormParam("quantity") double quantity) {
     	 RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(
          		recipeId, ingredientId, quantity, null, null);
 
@@ -68,7 +68,7 @@ public class RecipeIngredientAPI {
     @Path("/update/{recipeId}/{ingredientId}")
     public Response UpdateRecipeIngredient(@PathParam("recipeId") int recipeId,
             @PathParam("ingredientId") int ingredientId,
-            @FormParam("quantity") float quantity) {
+            @FormParam("quantity") double quantity) {
     	RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(
         		recipeId, ingredientId, quantity, null, null);
 
