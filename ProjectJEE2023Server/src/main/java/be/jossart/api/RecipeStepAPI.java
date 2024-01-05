@@ -20,7 +20,7 @@ import be.jossart.javabeans.Recipe_Server;
 public class RecipeStepAPI {
     
     @GET
-    @Path("{id}")
+    @Path("/get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response GetRecipeStep(@PathParam("id") int id) {
         RecipeStep_Server recipeStep = RecipeStep_Server.find(id);
@@ -31,7 +31,7 @@ public class RecipeStepAPI {
     }
 
     @GET
-    @Path("{instruction}/{recipeId}")
+    @Path("/getId/{instruction}/{recipeId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response GetRecipeStepId(@PathParam("instruction") String instruction,
                                     @PathParam("recipeId") int recipeId) {
@@ -66,7 +66,7 @@ public class RecipeStepAPI {
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{id}")
+    @Path("/update/{id}")
     public Response UpdateRecipeStep(@PathParam("id") int id,
                                      @FormParam("instruction") String instruction,
                                      @FormParam("recipeId") int recipeId) {
@@ -85,7 +85,7 @@ public class RecipeStepAPI {
     }
 
     @DELETE
-    @Path("{id}")
+    @Path("/delete/{id}")
     public Response deleteRecipeStep(@PathParam("id") int id) {
     	RecipeStep_Server recipeStep = new RecipeStep_Server(id, null, null);
         if (!recipeStep.delete()) {

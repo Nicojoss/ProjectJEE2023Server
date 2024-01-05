@@ -19,7 +19,7 @@ import be.jossart.javabeans.RecipeIngredient_Server;
 public class RecipeIngredientAPI {
 
 	@GET
-	@Path("{recipeId}/{ingredientId}")
+	@Path("/get/{recipeId}/{ingredientId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response GetRecipeIngredient(@PathParam("idIngredient") int idIngredient,
     		@PathParam("idRecipe") int idRecipe) {
@@ -32,7 +32,7 @@ public class RecipeIngredientAPI {
     }
 
     @GET
-    @Path("{idRecipe}/{quantity}")
+    @Path("/getId/{idRecipe}/{quantity}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response GetRecipeIngredientId(@PathParam("idRecipe") int idRecipe, 
     		@PathParam("quantity") float quantity) {
@@ -65,7 +65,7 @@ public class RecipeIngredientAPI {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{recipeId}/{ingredientId}")
+    @Path("/update/{recipeId}/{ingredientId}")
     public Response UpdateRecipeIngredient(@PathParam("recipeId") int recipeId,
             @PathParam("ingredientId") int ingredientId,
             @FormParam("quantity") float quantity) {
@@ -80,7 +80,7 @@ public class RecipeIngredientAPI {
     }
 
     @DELETE
-    @Path("{recipeId}/{ingredientId}")
+    @Path("/delete/{recipeId}/{ingredientId}")
     public Response DeleteRecipeIngredient(@PathParam("recipeId") int recipeId,
             @PathParam("ingredientId") int ingredientId) {
     	RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(

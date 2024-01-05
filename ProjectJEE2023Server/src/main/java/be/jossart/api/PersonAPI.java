@@ -15,7 +15,7 @@ import be.jossart.javabeans.Person_Server;
 @Path("/person")
 public class PersonAPI {
 	@GET
-    @Path("{id}")
+    @Path("/get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPerson(@PathParam("id") int id) {
         Person_Server person = Person_Server.find(id);
@@ -25,7 +25,7 @@ public class PersonAPI {
         return Response.status(Response.Status.OK).entity(person).build();
     }
 	@GET
-	@Path("{username}")
+	@Path("/getId/{username}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response GetPersonId(@FormParam("username") String username) {
 		

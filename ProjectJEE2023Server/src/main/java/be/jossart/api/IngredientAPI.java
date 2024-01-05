@@ -20,7 +20,7 @@ import be.jossart.javabeans.Ingredient_Server;
 @Path("ingredient")
 public class IngredientAPI {
 	@GET
-	@Path("{id}")
+	@Path("/get/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response GetIngredient(@PathParam("id") int id) {
 		Ingredient_Server ingredient = Ingredient_Server.find(id);
@@ -30,7 +30,7 @@ public class IngredientAPI {
 		return Response.status(Status.OK).entity(ingredient).build();
 	}
 	@GET
-	@Path("{name}/{type}")
+	@Path("/getId/{name}/{type}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response GetIngredientId(@FormParam("name") String name, 
 			@FormParam("type") String type) {
@@ -66,7 +66,7 @@ public class IngredientAPI {
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("{id}")
+	@Path("/update/{id}")
 	public Response UpdateIngredient(@PathParam("id") int id,
 			@FormParam("name") String name,
 	        @FormParam("type") String type) {
@@ -95,7 +95,7 @@ public class IngredientAPI {
 	}
 
 	@DELETE
-	@Path("{id}")
+	@Path("/delete/{id}")
 	public Response DeleteIngredient(@PathParam("id") int id) {
 		Ingredient_Server ingredient = new Ingredient_Server(id, null, null, null);
         if (!ingredient.delete()) {
