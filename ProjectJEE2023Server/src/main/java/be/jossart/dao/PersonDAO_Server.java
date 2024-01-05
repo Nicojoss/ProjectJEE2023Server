@@ -108,7 +108,7 @@ public class PersonDAO_Server extends DAO_Server<Person_Server>{
 	        cs.setInt(1, idPerson);
 	        cs.setString(2, newPassword);
 
-	        int updatedRows = cs.executeUpdate(); // executeUpdate() return int value
+	        int updatedRows = cs.executeUpdate();
 
 	        return updatedRows > 0;
 	    } catch (SQLException e) {

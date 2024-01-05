@@ -1,5 +1,7 @@
 package be.jossart.api;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -46,7 +48,18 @@ public class RecipeIngredientAPI {
         }
         return Response.status(Status.OK).entity(recipeIngredientWithId).build();
     }
+    @GET
+    @Path("/findIds/{recipeId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRecipeIngredientIdsByRecipe(@PathParam("recipeId") int recipeId) {
+        List<Integer> ingredientIds = RecipeIngredient_Server.findIds(recipeId);
 
+        if (ingredientIds == null || ingredientIds.isEmpty()) {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+
+        return Response.status(Status.OK).entity(ingredientIds).build();
+    }
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/create")

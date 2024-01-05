@@ -73,6 +73,10 @@ public class Recipe_Server implements Serializable{
 		RecipeDAO_Server dao = (RecipeDAO_Server) adf.getRecipeDAO();
 		return dao.findId(recipe);
 	}
+	public static List<Integer> findIds(int id) {
+		RecipeDAO_Server dao = (RecipeDAO_Server) adf.getRecipeDAO();
+		return dao.findIds(id);
+	}
 	//GETTERS SETTERS
 	public int getIdRecipe() {
 		return idRecipe;

@@ -2,6 +2,7 @@ package be.jossart.api;
 
 import java.util.List;
 
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -14,7 +15,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
 import be.jossart.javabeans.Person_Server;
 import be.jossart.javabeans.RecipeGender;
 import be.jossart.javabeans.Recipe_Server;
@@ -49,7 +49,19 @@ public class RecipeAPI {
         }
         return Response.status(Status.OK).entity(recipeWithId).build();
     }
+    
+    @GET
+    @Path("/findIds/{idPerson}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response GetRecipeIdsByPerson(@PathParam("idPerson") int idPerson) {
+        List<Integer> recipeIds = Recipe_Server.findIds(idPerson);
 
+        if (recipeIds == null || recipeIds.isEmpty()) {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+
+        return Response.status(Status.OK).entity(recipeIds).build();
+    }
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/create")

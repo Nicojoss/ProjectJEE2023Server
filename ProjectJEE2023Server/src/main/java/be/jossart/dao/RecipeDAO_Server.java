@@ -95,8 +95,8 @@ public class RecipeDAO_Server extends DAO_Server<Recipe_Server> {
                         resultSet.getString("Name"),
                         person,
                         RecipeGender.valueOf(resultSet.getString("RecipeGender")),
-                        null, // Populate the ingredientList
-                        null  // Populate the stepList
+                        null,
+                        null
                 );
 
                 return recipe;
@@ -126,7 +126,27 @@ public class RecipeDAO_Server extends DAO_Server<Recipe_Server> {
         }
         return null;
     }
+    
+    public List<Integer> findIds(int personId) {
+        List<Integer> recipeIds = new ArrayList<>();
+        String query = "{ call getRecipeIdsByPerson(?, ?) }";
+        try (CallableStatement cs = this.connect.prepareCall(query)) {
+            cs.setInt(1, personId);
+            cs.registerOutParameter(2, OracleTypes.CURSOR);
 
+            cs.execute();
+
+            ResultSet resultSet = (ResultSet) cs.getObject(2);
+            while (resultSet.next()) {
+                int recipeId = resultSet.getInt("idRecipe");
+                recipeIds.add(recipeId);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting recipe IDs by person: " + e.getMessage());
+        }
+        return recipeIds;
+    }
+    
 	public List<Recipe_Server> findRecipeByName(String recherche){
 		List<Recipe_Server> retour = new ArrayList<Recipe_Server>();
 		

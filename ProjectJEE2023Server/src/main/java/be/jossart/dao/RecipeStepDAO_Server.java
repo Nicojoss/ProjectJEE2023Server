@@ -4,6 +4,8 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import be.jossart.javabeans.RecipeStep_Server;
 import oracle.jdbc.OracleTypes;
@@ -109,5 +111,25 @@ public class RecipeStepDAO_Server extends DAO_Server<RecipeStep_Server>{
             System.out.println("Error finding RecipeStep by Id: " + e.getMessage());
         }
         return null;
+    }
+    
+    public List<Integer> findIds(int recipeId) {
+        List<Integer> stepIds = new ArrayList<>();
+        String query = "{ call getRecipeStepIdsByRecipe(?, ?) }";
+        try (CallableStatement cs = this.connect.prepareCall(query)) {
+            cs.setInt(1, recipeId);
+            cs.registerOutParameter(2, OracleTypes.CURSOR);
+
+            cs.execute();
+
+            ResultSet resultSet = (ResultSet) cs.getObject(2);
+            while (resultSet.next()) {
+                int stepId = resultSet.getInt("IdRecipeStep");
+                stepIds.add(stepId);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting recipe step IDs: " + e.getMessage());
+        }
+        return stepIds;
     }
 }

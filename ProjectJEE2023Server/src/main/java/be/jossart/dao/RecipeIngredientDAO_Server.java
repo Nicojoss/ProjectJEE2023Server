@@ -4,6 +4,8 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import be.jossart.javabeans.RecipeIngredient_Server;
 import oracle.jdbc.OracleTypes;
@@ -88,8 +90,8 @@ public class RecipeIngredientDAO_Server extends DAO_Server<RecipeIngredient_Serv
                         resultSet.getInt("IdIngredient"),
                         resultSet.getInt("IdRecipe"),
                         resultSet.getDouble("Quantity"),
-                        null, // Replace with the appropriate method to fetch Ingredient_Server
-                        null  // Replace with the appropriate method to fetch Recipe_Server
+                        null, 
+                        null
                 );
             }
         } catch (SQLException e) {
@@ -114,13 +116,33 @@ public class RecipeIngredientDAO_Server extends DAO_Server<RecipeIngredient_Serv
                         resultSet.getInt("IdIngredient"),
                         resultSet.getInt("IdRecipe"),
                         resultSet.getDouble("Quantity"),
-                        null, // Replace with the appropriate method to fetch Ingredient_Server
-                        null  // Replace with the appropriate method to fetch Recipe_Server
+                        null,
+                        null
                 );
             }
         } catch (SQLException e) {
             System.out.println("Error finding RecipeIngredient by Id: " + e.getMessage());
         }
         return null;
+    }
+    
+    public List<Integer> findIds(int recipeId) {
+        List<Integer> ingredientIds = new ArrayList<>();
+        String query = "{ call getRecipeIngredientIdsByRecipe(?, ?) }";
+        try (CallableStatement cs = this.connect.prepareCall(query)) {
+            cs.setInt(1, recipeId);
+            cs.registerOutParameter(2, OracleTypes.CURSOR);
+
+            cs.execute();
+
+            ResultSet resultSet = (ResultSet) cs.getObject(2);
+            while (resultSet.next()) {
+                int ingredientId = resultSet.getInt("IdIngredient");
+                ingredientIds.add(ingredientId);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting recipe ingredient IDs: " + e.getMessage());
+        }
+        return ingredientIds;
     }
 }
