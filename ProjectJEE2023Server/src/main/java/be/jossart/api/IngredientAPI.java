@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response.Status;
 import be.jossart.javabeans.IngredientType;
 import be.jossart.javabeans.Ingredient_Server;
 
-@Path("ingredient")
+@Path("/ingredient")
 public class IngredientAPI {
 	@GET
 	@Path("/get/{id}")

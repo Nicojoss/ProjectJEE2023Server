@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response.Status;
 import be.jossart.javabeans.RecipeStep_Server;
 import be.jossart.javabeans.Recipe_Server;
 
-@Path("recipeStep")
+@Path("/recipeStep")
 public class RecipeStepAPI {
     
     @GET
