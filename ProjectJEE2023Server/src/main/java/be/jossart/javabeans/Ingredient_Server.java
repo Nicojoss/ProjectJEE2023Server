@@ -33,6 +33,10 @@ public class Ingredient_Server implements Serializable{
 		this.type = type;
 		this.recipeIngredientList = recipeIngredientList;
 	}
+	public Ingredient_Server(String name, IngredientType ingredientType) {
+		this.name = name;
+		this.type = ingredientType;
+	}
 	//METHODS
 	public boolean create() {
 		return ingredientDAO.create(this);

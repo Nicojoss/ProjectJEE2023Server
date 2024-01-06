@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import be.jossart.javabeans.RecipeIngredient_Server;
 import oracle.jdbc.OracleTypes;
 
@@ -18,56 +17,59 @@ public class RecipeIngredientDAO_Server extends DAO_Server<RecipeIngredient_Serv
 
 	@Override
     public boolean create(RecipeIngredient_Server obj) {
-        String query = "{ call Insert_RecipeIngredient(?, ?, ?) }";
-        try (CallableStatement cs = this.connect.prepareCall(query)) {
-            cs.setInt(1, obj.getIngredient().getIdIngredient());
+		boolean success = false;
+		String query = "{ call Insert_RecipeIngredient(?, ?, ?) }";
+		try (CallableStatement cs = this.connect.prepareCall(query)) {
+			cs.setInt(1, obj.getIngredient().getIdIngredient());
             cs.setInt(2, obj.getRecipe().getIdRecipe());
             cs.setDouble(3, obj.getQuantity());
+			
+			cs.executeUpdate(); 
+			success = true;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
 
-            cs.execute();
-
-            return true;
-        } catch (SQLException e) {
-            System.out.println("Error creating RecipeIngredient: " + e.getMessage());
-        }
-
-        return false;
-    }
+		return success;
+	}		
 
     @Override
     public boolean delete(RecipeIngredient_Server obj) {
-        String query = "{ call Delete_RecipeIngredient(?, ?) }";
+    	boolean success = false;
+    	String query = "{ call Delete_RecipeIngredient(?, ?) }";
+
         try (CallableStatement cs = this.connect.prepareCall(query)) {
             cs.setInt(1, obj.getRecipe().getIdRecipe());
             cs.setInt(2, obj.getIngredient().getIdIngredient());
 
-            cs.execute();
-
-            return true;
+            cs.executeUpdate();
+            success = true;
         } catch (SQLException e) {
-            System.out.println("Error deleting RecipeIngredient: " + e.getMessage());
+        	System.out.println(e.getMessage());
         }
 
-        return false;
-    }
+        return success;
+    }   	
 
     @Override
     public boolean update(RecipeIngredient_Server obj) {
-        String query = "{ call Update_RecipeIngredient(?, ?, ?) }";
+    	boolean success = false;
+    	String query = "{ call Update_RecipeIngredient(?, ?, ?) }";
+
         try (CallableStatement cs = this.connect.prepareCall(query)) {
-            cs.setInt(1, obj.getRecipe().getIdRecipe());
+        	cs.setInt(1, obj.getRecipe().getIdRecipe());
             cs.setInt(2, obj.getIngredient().getIdIngredient());
             cs.setDouble(3, obj.getQuantity());
 
-            cs.execute();
-
-            return true;
+            cs.executeUpdate();
+            success = true;
         } catch (SQLException e) {
-            System.out.println("Error updating RecipeIngredient: " + e.getMessage());
+        	System.out.println(e.getMessage());
         }
 
-        return false;
+        return success;
     }
+
     
     @Override
 	public RecipeIngredient_Server find(int id) {
@@ -76,6 +78,7 @@ public class RecipeIngredientDAO_Server extends DAO_Server<RecipeIngredient_Serv
 	}
     
     public RecipeIngredient_Server find(int idRecipe, int idIngredient) {
+    	RecipeIngredient_Server recipeIngredient = null;
         String query = "{ call findRecipeIngredientById(?, ?, ?) }";
         try (CallableStatement cs = this.connect.prepareCall(query)) {
             cs.setInt(1, idIngredient);
@@ -83,21 +86,18 @@ public class RecipeIngredientDAO_Server extends DAO_Server<RecipeIngredient_Serv
             cs.registerOutParameter(3, OracleTypes.CURSOR);
 
             cs.execute();
-
-            ResultSet resultSet = cs.getObject(3, ResultSet.class);
-            if (resultSet.next()) {
-                return new RecipeIngredient_Server(
-                        resultSet.getInt("IdIngredient"),
-                        resultSet.getInt("IdRecipe"),
-                        resultSet.getDouble("Quantity"),
-                        null, 
-                        null
-                );
-            }
-        } catch (SQLException e) {
-            System.out.println("Error finding RecipeIngredient: " + e.getMessage());
-        }
-        return null;
+            try (ResultSet resultSet = (ResultSet) cs.getObject(2)) {
+	            if (resultSet.next()) {
+	                recipeIngredient = new RecipeIngredient_Server();
+	                recipeIngredient.setIdRecipe(idRecipe);
+	                recipeIngredient.setIdIngredient(idIngredient);
+	                recipeIngredient.setQuantity(resultSet.getInt("Quantity"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error: " + e.getMessage());
+	    }
+	    return recipeIngredient;
     }
    
 
@@ -107,23 +107,16 @@ public class RecipeIngredientDAO_Server extends DAO_Server<RecipeIngredient_Serv
             cs.setDouble(1, recipeIngredient.getQuantity());
             cs.setInt(2, recipeIngredient.getRecipe().getIdRecipe());
             cs.registerOutParameter(3, OracleTypes.CURSOR);
-
             cs.execute();
-
-            ResultSet resultSet = cs.getObject(3, ResultSet.class);
-            if (resultSet.next()) {
-                return new RecipeIngredient_Server(
-                        resultSet.getInt("IdIngredient"),
-                        resultSet.getInt("IdRecipe"),
-                        resultSet.getDouble("Quantity"),
-                        null,
-                        null
-                );
-            }
-        } catch (SQLException e) {
-            System.out.println("Error finding RecipeIngredient by Id: " + e.getMessage());
-        }
-        return null;
+            try (ResultSet resultSet = (ResultSet) cs.getObject(2)) {
+	            if (resultSet.next()) {
+	            	recipeIngredient.setIdIngredient(resultSet.getInt("IdIngredient"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error: " + e.getMessage());
+	    }
+	    return recipeIngredient;
     }
     
     public List<Integer> findIds(int recipeId) {
@@ -135,10 +128,11 @@ public class RecipeIngredientDAO_Server extends DAO_Server<RecipeIngredient_Serv
 
             cs.execute();
 
-            ResultSet resultSet = (ResultSet) cs.getObject(2);
-            while (resultSet.next()) {
-                int ingredientId = resultSet.getInt("IdIngredient");
-                ingredientIds.add(ingredientId);
+            try(ResultSet resultSet = (ResultSet) cs.getObject(2)){
+            	while (resultSet.next()) {
+                    int ingredientId = resultSet.getInt("IdIngredient");
+                    ingredientIds.add(ingredientId);
+                }
             }
         } catch (SQLException e) {
             System.out.println("Error getting recipe ingredient IDs: " + e.getMessage());

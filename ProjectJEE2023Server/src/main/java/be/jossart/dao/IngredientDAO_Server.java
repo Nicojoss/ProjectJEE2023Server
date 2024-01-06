@@ -2,6 +2,7 @@ package be.jossart.dao;
 
 import java.sql.CallableStatement;
 
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,101 +19,111 @@ public class IngredientDAO_Server extends DAO_Server<Ingredient_Server>{
 
 	@Override
 	public boolean create(Ingredient_Server obj) {
-	    String query = "{ call Insert_Ingredient(?, ?) }";
-	    try (CallableStatement cs = this.connect.prepareCall(query)) {
-	        cs.setString(1, obj.getName());
-	        cs.setString(2, obj.getType().name());
+			boolean success = false;
 
-	        cs.execute();
-            
-	        return true;
-	    } catch (SQLException e) {
-	        System.out.println("Error: " + e.getMessage());
-	    }
+			String query = "{call Insert_Ingredient(?,?)}";
+			try (CallableStatement cs = this.connect.prepareCall(query)) {
 
-	    return false;
-	}
+				cs.setString(1, obj.getName());
+				cs.setString(2, obj.getType().toString());
+				
+				cs.executeUpdate(); 
+				success = true;
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+
+			return success;
+		}
 
 
 	@Override
     public boolean delete(Ingredient_Server obj) {
-        String query = "{ call Delete_Ingredient(?) }";
+		boolean success = false;
 
-        try (CallableStatement cs = this.connect.prepareCall(query)) {
-            cs.setInt(1, obj.getIdIngredient());
+		String query = "{ call Delete_Ingredient(?) }";
+		try (CallableStatement cs = this.connect.prepareCall(query)) {
 
-            cs.execute();
-            return true;
-        } catch (SQLException e) {
-            System.out.println("Error deleting ingredient: " + e.getMessage());
-        }
+			cs.setInt(1, obj.getIdIngredient());
+			
+			cs.executeUpdate(); 
+			success = true;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
 
-        return false;
+		return success;
     }
 
     @Override
     public boolean update(Ingredient_Server obj) {
-        String query = "{ call Update_Ingredient(?,?,?) }";
+    		boolean success = false;
 
-        try (CallableStatement cs = this.connect.prepareCall(query)) {
-            cs.setInt(1, obj.getIdIngredient());
-            cs.setString(2, obj.getName());
-            cs.setString(3, obj.getType().name());
+    		String query = "{ call Update_Ingredient(?,?,?) }";
+    		try (CallableStatement cs = this.connect.prepareCall(query)) {
 
-            cs.execute();
-            return true;
-        } catch (SQLException e) {
-            System.out.println("Error updating ingredient: " + e.getMessage());
-        }
+    			cs.setInt(1, obj.getIdIngredient());
+                cs.setString(2, obj.getName());
+                cs.setString(3, obj.getType().name());
+    			
+    			cs.executeUpdate(); 
+    			success = true;
+    		} catch (SQLException e) {
+    			System.out.println(e.getMessage());
+    		}
 
-        return false;
-    }
+    		return success;
+     }
 
     @Override
     public Ingredient_Server find(int id) {
-        String query = "{ call findIngredientById(?, ?) }";
-        try (CallableStatement cs = this.connect.prepareCall(query)) {
-            cs.setInt(1, id);
-            cs.registerOutParameter(2, OracleTypes.CURSOR);
+    	Ingredient_Server ingredient = null;
 
-            cs.execute();
+    	String query = "{ call findIngredientById(?, ?) }";
+	    try (CallableStatement cs = this.connect.prepareCall(query)) {
+	        cs.setInt(1, id);
+	        cs.registerOutParameter(3, OracleTypes.CURSOR);
 
-            ResultSet resultSet = (ResultSet) cs.getObject(2);
-            if (resultSet.next()) {
-                return new Ingredient_Server(
-                        resultSet.getInt("IdIngredient"),
-                        resultSet.getString("Name"),
-                        IngredientType.valueOf(resultSet.getString("TypeIngredient")),
-                        null
-                );
-            }
-        } catch (SQLException e) {
-            System.out.println("Error finding ingredient: " + e.getMessage());
-        }
-        return null;
+	        cs.execute();
+
+	        try (ResultSet resultSet = (ResultSet) cs.getObject(3)) {
+	            if (resultSet.next()) {
+	                ingredient = new Ingredient_Server();
+	                ingredient.setIdIngredient(resultSet.getInt("IdIngredient"));
+	                ingredient.setName(resultSet.getString("Name"));
+	                ingredient.setType(IngredientType.valueOf(resultSet
+	                		.getString("TypeIngredient")));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error: " + e.getMessage());
+	    }
+
+	    return ingredient;
     }
     
     public Ingredient_Server findId(Ingredient_Server ingredient) {
-        String query = "{ call findIngredientId(?, ?, ?) }";
-        try (CallableStatement cs = this.connect.prepareCall(query)) {
-            cs.setString(1, ingredient.getName());
+    	String query = "{ call findIngredientId(?, ?, ?) }";
+	    try (CallableStatement cs = this.connect.prepareCall(query)) {
+	    	cs.setString(1, ingredient.getName());
             cs.setString(2, ingredient.getType().name());
-            cs.registerOutParameter(3, OracleTypes.CURSOR);
+	        cs.registerOutParameter(3, OracleTypes.CURSOR);
 
-            cs.execute();
+	        cs.execute();
 
-            ResultSet resultSet = (ResultSet) cs.getObject(3);
-            if (resultSet.next()) {
-                return new Ingredient_Server(
-                        resultSet.getInt("IdIngredient"),
-                        resultSet.getString("Name"),
-                        IngredientType.valueOf(resultSet.getString("TypeIngredient")),
-                        null
-                );
-            }
-        } catch (SQLException e) {
-            System.out.println("Error finding ingredient: " + e.getMessage());
-        }
-        return null;
+	        try (ResultSet resultSet = (ResultSet) cs.getObject(3)) {
+	            if (resultSet.next()) {
+	                ingredient = new Ingredient_Server();
+	                ingredient.setIdIngredient(resultSet.getInt("IdIngredient"));
+	                ingredient.setName(resultSet.getString("Name"));
+	                ingredient.setType(IngredientType.valueOf(resultSet
+	                		.getString("TypeIngredient")));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error: " + e.getMessage());
+	    }
+
+	    return ingredient;
     }
 }

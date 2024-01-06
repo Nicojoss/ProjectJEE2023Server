@@ -50,27 +50,29 @@ public class PersonDAO_Server extends DAO_Server<Person_Server>{
 
 	@Override
     public Person_Server find(int id) {
+		Person_Server person = null;
+
         String query = "{ call findPersonById(?, ?) }";
-        try (CallableStatement cs = this.connect.prepareCall(query)) {
-            cs.setInt(1, id);
+	    try (CallableStatement cs = this.connect.prepareCall(query)) {
+	    	cs.setInt(1, id);
             cs.registerOutParameter(2, OracleTypes.CURSOR);
 
-            cs.execute();
+	        cs.execute();
 
-            ResultSet resultSet = (ResultSet) cs.getObject(2);
-            if (resultSet.next()) {
-                return new Person_Server(
-                        resultSet.getInt("IdPerson"),
-                        resultSet.getString("Firstname"),
-                        resultSet.getString("Lastname"),
-                        resultSet.getString("Username"),
-                        null
-                );
-            }
-        } catch (SQLException e) {
-            System.out.println("Error finding ingredient: " + e.getMessage());
-        }
-        return null;
+	        try (ResultSet resultSet = (ResultSet) cs.getObject(3)) {
+	            if (resultSet.next()) {
+	                person = new Person_Server();
+	                person.setIdPerson(resultSet.getInt("IdPerson"));
+	                person.setFirstname(resultSet.getString("Firstname"));
+	                person.setLastname(resultSet.getString("Lastname"));
+	                person.setUsername(resultSet.getString("Username"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error: " + e.getMessage());
+	    }
+
+	    return person;
     }
 	
 	public Person_Server login(String username, String password) {
@@ -118,25 +120,25 @@ public class PersonDAO_Server extends DAO_Server<Person_Server>{
 	}
 	public Person_Server findId(Person_Server person) {
         String query = "{ call findPersonId(?, ?) }";
-        try (CallableStatement cs = this.connect.prepareCall(query)) {
-            cs.setString(1, person.getUsername());
-            cs.registerOutParameter(3, OracleTypes.CURSOR);
+	    try (CallableStatement cs = this.connect.prepareCall(query)) {
+	    	cs.setString(1, person.getUsername());
+            cs.registerOutParameter(2, OracleTypes.CURSOR);
 
-            cs.execute();
+	        cs.execute();
 
-            ResultSet resultSet = (ResultSet) cs.getObject(3);
-            if (resultSet.next()) {
-                return new Person_Server(
-                        resultSet.getInt("IdPerson"),
-                        person.getFirstname(),
-                        person.getLastname(),
-                        person.getUsername(),
-                        person.getPassword()
-                );
-            }
-        } catch (SQLException e) {
-            System.out.println("Error finding ingredient: " + e.getMessage());
-        }
-        return null;
+	        try (ResultSet resultSet = (ResultSet) cs.getObject(3)) {
+	            if (resultSet.next()) {
+	                person = new Person_Server();
+	                person.setIdPerson(resultSet.getInt("IdPerson"));
+	                person.setFirstname(resultSet.getString("Firstname"));
+	                person.setLastname(resultSet.getString("Lastname"));
+	                person.setUsername(resultSet.getString("Username"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error: " + e.getMessage());
+	    }
+
+	    return person;
     }
 }

@@ -1,15 +1,10 @@
 package be.jossart.api;
 
-import java.util.List;
-
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -20,49 +15,9 @@ import be.jossart.javabeans.RecipeIngredient_Server;
 @Path("/RecipeIngredient")
 public class RecipeIngredientAPI {
 
-	@GET
-	@Path("/get/{recipeId}/{ingredientId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response GetRecipeIngredient(@PathParam("idIngredient") int idIngredient,
-    		@PathParam("idRecipe") int idRecipe) {
-        RecipeIngredient_Server recipeIngredient = RecipeIngredient_Server
-        		.find(idRecipe,idIngredient);
-        if (recipeIngredient == null) {
-            return Response.status(Status.NOT_FOUND).build();
-        }
-        return Response.status(Status.OK).entity(recipeIngredient).build();
-    }
-
-    @GET
-    @Path("/getId/{idRecipe}/{quantity}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response GetRecipeIngredientId(@PathParam("idRecipe") int idRecipe, 
-    		@PathParam("quantity") double quantity) {
-        RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(idRecipe,
-        		quantity, null, null);
-        RecipeIngredient_Server recipeIngredientWithId = RecipeIngredient_Server
-        		.findId(recipeIngredient);
-
-        if (recipeIngredientWithId == null) {
-            return Response.status(Status.NOT_FOUND).build();
-        }
-        return Response.status(Status.OK).entity(recipeIngredientWithId).build();
-    }
-    @GET
-    @Path("/findIds/{recipeId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getRecipeIngredientIdsByRecipe(@PathParam("recipeId") int recipeId) {
-        List<Integer> ingredientIds = RecipeIngredient_Server.findIds(recipeId);
-
-        if (ingredientIds == null || ingredientIds.isEmpty()) {
-            return Response.status(Status.NOT_FOUND).build();
-        }
-
-        return Response.status(Status.OK).entity(ingredientIds).build();
-    }
+	@Path("/create")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/create")
     public Response CreateRecipeIngredientAndGetId(@FormParam("recipeId") int recipeId,
             @FormParam("ingredientId") int ingredientId,
             @FormParam("quantity") double quantity) {
@@ -76,11 +31,11 @@ public class RecipeIngredientAPI {
          }
     }
 
+    @Path("/update")
     @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/update/{recipeId}/{ingredientId}")
-    public Response UpdateRecipeIngredient(@PathParam("recipeId") int recipeId,
-            @PathParam("ingredientId") int ingredientId,
+    @FormParam(MediaType.APPLICATION_JSON)
+    public Response UpdateRecipeIngredient(@FormParam("recipeId") int recipeId,
+            @FormParam("ingredientId") int ingredientId,
             @FormParam("quantity") double quantity) {
     	RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(
         		recipeId, ingredientId, quantity, null, null);
@@ -92,10 +47,10 @@ public class RecipeIngredientAPI {
         }
     }
 
+	@Path("/delete")
     @DELETE
-    @Path("/delete/{recipeId}/{ingredientId}")
-    public Response DeleteRecipeIngredient(@PathParam("recipeId") int recipeId,
-            @PathParam("ingredientId") int ingredientId) {
+    public Response DeleteRecipeIngredient(@FormParam("recipeId") int recipeId,
+            @FormParam("ingredientId") int ingredientId) {
     	RecipeIngredient_Server recipeIngredient = new RecipeIngredient_Server(
         		recipeId, ingredientId, 0, null, null);
         if (!recipeIngredient.delete()) {

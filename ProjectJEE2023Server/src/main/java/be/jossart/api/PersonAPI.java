@@ -1,11 +1,9 @@
 package be.jossart.api;
 
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -14,28 +12,6 @@ import be.jossart.javabeans.Person_Server;
 
 @Path("/person")
 public class PersonAPI {
-	@GET
-    @Path("/get/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getPerson(@PathParam("id") int id) {
-        Person_Server person = Person_Server.find(id);
-        if (person == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.status(Response.Status.OK).entity(person).build();
-    }
-	@GET
-	@Path("/getId/{username}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response GetPersonId(@FormParam("username") String username) {
-		
-		Person_Server person = new Person_Server(username,null);
-		Person_Server personWithId = Person_Server.findId(person);
-		if(personWithId  == null) {
-			return Response.status(Status.NOT_FOUND).build();
-		}
-		return Response.status(Status.OK).entity(personWithId).build();
-	}
 	@Path("/create")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
