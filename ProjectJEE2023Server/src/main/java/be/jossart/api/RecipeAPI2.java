@@ -57,18 +57,4 @@ public class RecipeAPI2 {
 
         return Response.status(Status.OK).entity(recipeIds).build();
     }
-    @GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{recherche}")
-	public Response getRechercheRecipe(@PathParam("recherche") String recherche) {
-		List<Recipe_Server> retour = null;
-		System.out.println("rechercher : " +recherche);
-		if (recherche.length()>=50|| recherche==null) {
-			return Response.status(Status.BAD_REQUEST).build(); 
-		}else {
-			retour  = Recipe_Server.searchRecipe(recherche);
-		}
-		
-		return Response.status(Status.OK).entity(retour).build();
-	}
 }
